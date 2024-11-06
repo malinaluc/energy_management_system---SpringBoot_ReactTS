@@ -20,10 +20,6 @@ export const UserPopUp = (props: IUserPopUpProps): JSX.Element => {
         role: Role.Client
     });
 
-    const handleClose = () => {
-        props.onClose();
-    };
-
     const handleNameChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
         setUser({ ...user, name: event.target.value });
     };
@@ -37,24 +33,28 @@ export const UserPopUp = (props: IUserPopUpProps): JSX.Element => {
     };
 
     const handleSaveUser = async (): Promise<void> => {
-        if (props.currentUser) {
-            const response = await axios.put(`http://localhost:8080/api/users/${user.id}`, user);
-            props.loadUsers();
-        }
         try {
-            const response = await axios.post("http://localhost:8080/api/users", user);
-            props.loadUsers();
+            if (props.currentUser) {
+                console.log("Im in handleSaveUser function on update and the  user is  " , user);
+                const response = await axios.put(`http://localhost:8080/api/users/${user.id}`, user);
+                props.loadUsers();
+            }
+            else {
+                console.log("Im in handleSaveUser function on save and the  user is  " , user);
+                const response = await axios.post("http://localhost:8080/api/users", user);
+                props.loadUsers();
+            }
         } catch (error) {
             console.error("Error saving user:", error);
         }
-        handleClose();
+        props.onClose();
     };
 
     return (
         <ThemeProvider theme={themeConstant.palette.secondary}>
             <Dialog
                 open={props.open}
-                onClose={handleClose}
+                onClose={props.onClose}
             >
                 <DialogTitle>{props.currentUser ? "Update User" : "Add User"}</DialogTitle>
                 <DialogContent className={styles.root}>
@@ -97,7 +97,7 @@ export const UserPopUp = (props: IUserPopUpProps): JSX.Element => {
                         <Button
                             className={styles.buttonCloseClassName}
                             variant={VARIANT_OUTLINED}
-                            onClick={handleClose}>
+                            onClick={props.onClose}>
                             CLOSE
                         </Button>
                     </div>

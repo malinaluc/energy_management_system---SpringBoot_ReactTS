@@ -26,5 +26,10 @@ export const useStyles = makeStyles({
     },
     dataGridClassName: {
         border: '0'
+    },
+    paperOfDataGridClassName: {
+        height: '300px',
+        width: '90%',
+        margin: '20px auto'
     }
 });

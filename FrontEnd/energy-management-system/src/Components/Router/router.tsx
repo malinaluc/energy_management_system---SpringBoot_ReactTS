@@ -3,7 +3,7 @@ import { ACCESS_DENIED_NAVIGATION_PATH, ADMIN_NAVIGATION_PATH, CLIENT_NAVIGATION
 import { AccessDeniedPage } from "../AccessDeniedPage/accessDeniedPage";
 import { AdminPage } from "../AdminPage/adminPage";
 import { ClientPage } from "../ClientPage/clientPage";
-import { EditUsersPage } from "../EditUsersPage/editDevicesPage";
+import { EditDevicesPage } from "../EditDevicesPage/editDevicesPage";
 import { LogIn } from "../LogInPage/logIn";
 import ProtectedRoute from "../ProtectedRoute/protectedRoute";
 import Root from "../Root/root";
@@ -35,14 +35,13 @@ export const routes: RouteObject[] = [
         path: EDIT_DEVICES_NAVIGATION_PATH,
         element: <ProtectedRoute requiredRole="admin" />,
         children: [
-            { path: EDIT_DEVICES_NAVIGATION_PATH, element: <EditUsersPage /> }
+            { path: EDIT_DEVICES_NAVIGATION_PATH, element: <EditDevicesPage /> }
         ]
     },
     {
         path: ACCESS_DENIED_NAVIGATION_PATH,
         element: <AccessDeniedPage />
     }
-
 ];
 
 export const router = createBrowserRouter(routes);

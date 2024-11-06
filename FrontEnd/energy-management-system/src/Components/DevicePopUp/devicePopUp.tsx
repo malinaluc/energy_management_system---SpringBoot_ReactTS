@@ -6,6 +6,7 @@ import { ADD, ADD_DEVICE, EMPTY_STRING, LABEL_ADDRESS, LABEL_DESCRIPTION, LABEL_
 import { Button, Dialog, DialogContent, DialogContentText, DialogTitle, TextField, ThemeProvider } from "@mui/material";
 import { themeConstant } from "../../Library/Constants/themeConstants";
 import axios from "axios";
+import { ERROR_SAVING_DEVICE } from "../../Library/Constants/errorsConstants";
 
 export const DevicePopUp = (props: IDevicePopUpProps): JSX.Element => {
     const styles = useStyles();
@@ -14,13 +15,9 @@ export const DevicePopUp = (props: IDevicePopUpProps): JSX.Element => {
         id: NaN,
         description: EMPTY_STRING,
         address: EMPTY_STRING,
-        hourlyEnergyConsumption: NaN,
+        hourlyEnergyConsumption: 0,
         user: undefined
     });
-
-    const handleClose = () => {
-        props.onClose();
-    };
 
     const handleDescriptionChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
         setDevice({ ...device, description: event.target.value });
@@ -35,22 +32,24 @@ export const DevicePopUp = (props: IDevicePopUpProps): JSX.Element => {
     };
 
     const handleSaveDevice = async () => {
-        if (props.currentDevice) {
-            const response = await axios.put(`http://localhost:8081/api/devices/${device.id}`, device);
-            props.loadDevices();
-        }
         try {
-            const response = await axios.post(`http://localhost:8081/api/devices`, device);
-            props.loadDevices();
+            if (props.currentDevice) {
+                const response = await axios.put(`http://localhost:8081/api/devices/${device.id}`, device);
+                props.loadDevices();
+            }
+            else {
+                const response = await axios.post(`http://localhost:8081/api/devices`, device);
+                props.loadDevices();
+            }
         } catch (error) {
-            console.error("Error saving device:", error);
+            console.error(ERROR_SAVING_DEVICE, error);
         }
         props.onClose();
     };
 
     return (
         <ThemeProvider theme={themeConstant.palette.secondary}>
-            <Dialog open={props.open} onClose={handleClose}>
+            <Dialog open={props.open} onClose={props.onClose}>
                 <DialogTitle>
                     {props.currentDevice
                         ? UPDATE_DEVICE
@@ -81,7 +80,11 @@ export const DevicePopUp = (props: IDevicePopUpProps): JSX.Element => {
                         <TextField
                             variant={VARIANT_OUTLINED}
                             label={LABEL_HOURLY_ENERGY_CONSUMPTION}
-                            value={device.hourlyEnergyConsumption}
+                            value={
+                                props.currentDevice
+                                    ? device.hourlyEnergyConsumption
+                                    : EMPTY_STRING
+                            }
                             onChange={handleHourlyEnergyConsumptionChange}
                         />
                     </div>
