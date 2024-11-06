@@ -1,6 +1,7 @@
 package com.ds.semdevices.controller;
 
 import com.ds.semdevices.dto.GetUserDevicesDto;
+import com.ds.semdevices.dto.PairDeviceDto;
 import com.ds.semdevices.dto.UpdateDeviceDto;
 import com.ds.semdevices.entity.Device;
 import com.ds.semdevices.exception.NoSuchEntityException;
@@ -30,6 +31,16 @@ public class DeviceController implements DeviceControllerResource {
     }
 
     @Override
+    public ResponseEntity<List<Device>> getDevicesByUsernameOrUnassigned(String username) {
+        try {
+            List<Device> devices = deviceService.getDevicesByUsernameOrUnassigned(username);
+            return ResponseEntity.ok(devices);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+    @Override
     public ResponseEntity<String> createDevice(Device device) {
         try {
             deviceService.createDevice(device);
@@ -40,7 +51,7 @@ public class DeviceController implements DeviceControllerResource {
     }
 
     @Override
-    public ResponseEntity<?> getDevice(Long deviceId) {
+    public ResponseEntity<?> getDevice(Integer deviceId) {
         try {
             var device = deviceService.readDevice(deviceId);
             return ResponseEntity.status(200).body(device);
@@ -50,7 +61,7 @@ public class DeviceController implements DeviceControllerResource {
     }
 
     @Override
-    public ResponseEntity<String> updateDevice(Long deviceId, UpdateDeviceDto updateDeviceDto) {
+    public ResponseEntity<String> updateDevice(Integer deviceId, UpdateDeviceDto updateDeviceDto) {
         try {
             deviceService.updateDevice(deviceId, updateDeviceDto);
         } catch (NoSuchEntityException e) {
@@ -62,7 +73,7 @@ public class DeviceController implements DeviceControllerResource {
     }
 
     @Override
-    public ResponseEntity<String> deleteDevice(Long deviceId) {
+    public ResponseEntity<String> deleteDevice(Integer deviceId) {
         try {
             deviceService.deleteDevice(deviceId);
         } catch (Exception e) {
@@ -74,7 +85,6 @@ public class DeviceController implements DeviceControllerResource {
     @Override
     public ResponseEntity<List<UserDevicesResponse>> userDevices(GetUserDevicesDto getUserDevicesDto) {
         List<UserDevicesResponse> devices = deviceService.getDeviceForUser(getUserDevicesDto.getUsername());
-
         return ResponseEntity.ok(devices);
     }
 
@@ -82,5 +92,15 @@ public class DeviceController implements DeviceControllerResource {
     public ResponseEntity<List<UserDevicesResponse>> userDevicesByUserUsername(String username) {
         List<UserDevicesResponse> devices = deviceService.getDeviceForUser(username);
         return ResponseEntity.ok(devices);
+    }
+
+    @Override
+    public ResponseEntity<Device> pairDeviceWithUser(PairDeviceDto pairDeviceDto) {
+        return ResponseEntity.ok(deviceService.pairDeviceForUser(pairDeviceDto));
+    }
+
+    @Override
+    public ResponseEntity<Device> unpairDeviceForUser(PairDeviceDto pairDeviceDto) {
+        return ResponseEntity.ok(deviceService.unpairDeviceForUser(pairDeviceDto));
     }
 }

@@ -20,7 +20,7 @@ export const useStyles = makeStyles({
         marginLeft: '10vw !important'
     },
     typography: {
-        marginLeft: '37vw !important',
+        marginLeft: '30vw !important',
         marginBottom: '0 !important',
         marginTop: '0 !important'
     },
@@ -28,11 +28,9 @@ export const useStyles = makeStyles({
         border: '0px !important'
     },
     paper: {
-        height: 300,
-        width: '100%',
-        alignContent: 'center',
-        marginTop: '0 !important',
-        display: 'flex'
+        height: '300px',
+        width: '90%',
+        margin: '20px auto'
     },
     addUSerButton:{
         justifyContent : 'center',

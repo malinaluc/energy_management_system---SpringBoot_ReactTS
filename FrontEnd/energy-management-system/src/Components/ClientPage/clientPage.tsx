@@ -2,18 +2,24 @@ import { ThemeProvider } from "@emotion/react";
 import CastIcon from '@mui/icons-material/Cast';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { Button, IconButton, Typography } from "@mui/material";
+import { IconButton, Typography } from "@mui/material";
 import Paper from '@mui/material/Paper';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import React, { Fragment, useState } from "react";
+import axios from "axios";
+import React, { Fragment, useEffect, useState } from "react";
 import { themeConstant } from "../../Library/Constants/themeConstants";
+import { IDevice } from "../../Library/Models/IDevice";
 import { useStyles } from "../ClientPage/clientPage.styles";
 import { ITableData } from "./clientPage.types";
-import { VARIANT_OUTLINED } from "../../Library/Constants/constants";
 
 export const ClientPage = (): JSX.Element => {
     const styles = useStyles();
     const [dialogOpen, setDialogOpen] = useState(false);
+    const [devices, setDevices] = useState<IDevice[]>([]);
+
+    useEffect(() => {
+        loadDevicesOfClient();
+    }, []);
 
     const handleDelete = (event: React.MouseEvent) => {
         event.stopPropagation();
@@ -25,7 +31,22 @@ export const ClientPage = (): JSX.Element => {
 
     const handlePair = (event: React.MouseEvent) => {
         event.stopPropagation();
-    }
+    };
+
+    const loadDevicesOfClient = async () => {
+        const username = sessionStorage.getItem("userUsername");
+        if (!username) {
+            console.error("User username not found in session storage");
+            return;
+        }
+
+        try {
+            const devicesResult = await axios.get(`http://localhost/api/devices/forUserEmail/${username}`);
+            setDevices(devicesResult.data);
+        } catch {
+            console.error("Error while loading devices based on user id");
+        }
+    };
 
     const columns: GridColDef[] = [
         { field: 'id', headerName: 'ID', width: 70 },
@@ -55,13 +76,12 @@ export const ClientPage = (): JSX.Element => {
         }
     ];
 
-    const rows: ITableData[] = [
-        { id: 1, description: 'Smart Thermostat', address: '101 Climate Ave', hourlyEnergyConsumption: 8 },
-        { id: 2, description: 'Security Camera', address: '202 Watchtower Blvd', hourlyEnergyConsumption: 4 },
-        { id: 3, description: 'Smart Light Bulb', address: '303 Bright St', hourlyEnergyConsumption: 12 },
-        { id: 4, description: 'Smart Refrigerator', address: '404 Chilly Rd', hourlyEnergyConsumption: 24 },
-        { id: 5, description: 'Smart Speaker', address: '505 Soundwave Ct', hourlyEnergyConsumption: 10 }
-    ];
+    const rows: ITableData[] = devices.map((device) => ({
+        id: device.id,
+        description: device.description,
+        address: device.address,
+        hourlyEnergyConsumption: device.hourlyEnergyConsumption
+    }));
 
     const paginationModel = { page: 0, pageSize: 3 };
 
@@ -72,7 +92,7 @@ export const ClientPage = (): JSX.Element => {
                     <Typography variant='h4' color={themeConstant.palette.primary.light} align="center"> Welcome back ! You can see your devices below. </Typography>
                 </Fragment>
 
-                <Paper sx={{ height: 300, width: '100%', alignContent: 'center' }}>
+                <Paper className ={styles.paperOfDataGridClassName}>
                     <DataGrid
                         className={styles.dataGridClassName}
                         rows={rows}

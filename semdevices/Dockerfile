@@ -5,8 +5,8 @@ COPY ./pom.xml /root/
 COPY ./checkstyle.xml /root/
 WORKDIR /root
 RUN mvn package
-RUN java -Djarmode=layertools -jar /root/target/emsuser-0.0.1-SNAPSHOT.jar list
-RUN java -Djarmode=layertools -jar /root/target/emsuser-0.0.1-SNAPSHOT.jar extract
+RUN java -Djarmode=layertools -jar /root/target/semdevices-0.0.1-SNAPSHOT.jar list
+RUN java -Djarmode=layertools -jar /root/target/semdevices-0.0.1-SNAPSHOT.jar extract
 RUN ls -l /root
 
 FROM openjdk:17-jdk-slim-buster
@@ -16,7 +16,7 @@ ENV DB_IP=localhost
 ENV DB_PORT=3306
 ENV DB_USER=root
 ENV DB_PASSWORD=cutucutumiau
-ENV DB_DBNAME=energy_system
+ENV DB_DBNAME=energy_system_device
 
 
 COPY --from=builder /root/dependencies/ ./

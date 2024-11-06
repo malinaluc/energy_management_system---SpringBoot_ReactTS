@@ -1,5 +1,6 @@
 package com.ds.semdevices.service;
 
+import com.ds.semdevices.dto.PairDeviceDto;
 import com.ds.semdevices.dto.UpdateDeviceDto;
 import com.ds.semdevices.entity.Device;
 import com.ds.semdevices.exception.NoSuchEntityException;
@@ -12,13 +13,19 @@ import java.util.List;
 public interface DeviceService {
     void createDevice(Device device) throws Exception;
 
-    Device readDevice(Long deviceId);
+    Device readDevice(Integer deviceId);
 
     List<UserDevicesResponse> getDeviceForUser(String username);
 
-    void updateDevice(Long deviceId, UpdateDeviceDto device) throws Exception;
+    void updateDevice(Integer deviceId, UpdateDeviceDto device) throws Exception;
 
-    void deleteDevice(Long deviceId) throws NoSuchEntityException;
+    void deleteDevice(Integer deviceId) throws NoSuchEntityException;
 
     List<Device> getAllDevices() throws Exception;
+
+    List<Device> getDevicesByUsernameOrUnassigned(String username) throws Exception;
+
+    Device pairDeviceForUser(PairDeviceDto pairDeviceDto);
+
+    Device unpairDeviceForUser(PairDeviceDto pairDeviceDto);
 }

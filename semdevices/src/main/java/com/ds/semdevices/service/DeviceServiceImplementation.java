@@ -1,9 +1,12 @@
 package com.ds.semdevices.service;
 
+import com.ds.semdevices.dto.PairDeviceDto;
 import com.ds.semdevices.dto.UpdateDeviceDto;
 import com.ds.semdevices.entity.Device;
+import com.ds.semdevices.entity.User;
 import com.ds.semdevices.exception.NoSuchEntityException;
 import com.ds.semdevices.repository.DeviceRepository;
+import com.ds.semdevices.repository.UserRepository;
 import com.ds.semdevices.response.UserDevicesResponse;
 import lombok.AllArgsConstructor;
 import org.hibernate.Hibernate;
@@ -16,6 +19,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class DeviceServiceImplementation implements DeviceService {
     private DeviceRepository deviceRepository;
+    private UserRepository userRepository;
 
     @Override
     public List<Device> getAllDevices() throws Exception {
@@ -24,6 +28,49 @@ public class DeviceServiceImplementation implements DeviceService {
         } catch (Exception e) {
             throw new Exception(e.toString());
         }
+    }
+
+    @Override
+    public List<Device> getDevicesByUsernameOrUnassigned(String username) throws Exception {
+        try {
+            return deviceRepository.getDevicesByUsernameOrUnassigned(username);
+        } catch (Exception e) {
+            throw new Exception(e.toString());
+        }
+    }
+
+    @Override
+    public Device pairDeviceForUser(PairDeviceDto pairDeviceDto) {
+        User user = userRepository.findByUsername(pairDeviceDto.getUsername());
+
+        if (user == null) {
+            user = userRepository.save(
+                    new User().setUsername(pairDeviceDto.getUsername())
+            );
+        }
+
+        Device device = deviceRepository.findDeviceById(pairDeviceDto.getDeviceId());
+        device.setUser(user);
+
+        return deviceRepository.save(device);
+    }
+
+    @Override
+    public Device unpairDeviceForUser(PairDeviceDto pairDeviceDto) {
+        User user = userRepository.findByUsername(pairDeviceDto.getUsername());
+        Device device = deviceRepository.findDeviceById(pairDeviceDto.getDeviceId());
+
+        device.setUser(null);
+        deviceRepository.save(device);
+
+        List<Device> userDevicesList;
+        userDevicesList = deviceRepository.findDeviceByUserUsername(pairDeviceDto.getUsername());
+
+        if (userDevicesList.isEmpty()) {
+            userRepository.delete(user);
+        }
+
+        return device;
     }
 
     @Override
@@ -36,7 +83,7 @@ public class DeviceServiceImplementation implements DeviceService {
     }
 
     @Override
-    public Device readDevice(Long deviceId) {
+    public Device readDevice(Integer deviceId) {
         Device device = deviceRepository.findDeviceById(deviceId);
         Hibernate.initialize(device.getUser());
         return deviceRepository.findDeviceById(deviceId);
@@ -55,7 +102,7 @@ public class DeviceServiceImplementation implements DeviceService {
     }
 
     @Override
-    public void updateDevice(Long deviceId, UpdateDeviceDto updateDeviceDto) throws Exception {
+    public void updateDevice(Integer deviceId, UpdateDeviceDto updateDeviceDto) throws Exception {
         Device deviceData = deviceRepository.findDeviceById(deviceId);
         if (deviceData != null) {
             deviceData.setAddress(updateDeviceDto.getAddress());
@@ -73,7 +120,7 @@ public class DeviceServiceImplementation implements DeviceService {
     }
 
     @Override
-    public void deleteDevice(Long deviceId) throws NoSuchEntityException {
+    public void deleteDevice(Integer deviceId) throws NoSuchEntityException {
         Device deviceData = deviceRepository.findDeviceById(deviceId);
         if (deviceData != null) {
             deviceRepository.delete(deviceData);

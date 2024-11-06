@@ -11,10 +11,11 @@ export const useStyles = makeStyles({
     },
     buttonSaveClassName: {
         marginLeft: '11w !important',
-        color: themeConstant.palette.secondary.main
+        color: `${themeConstant.palette.secondary.dark} !important`
     },
     buttonCloseClassName: {
-        marginLeft: '2vw !important'
+        marginLeft: '2vw !important',
+        color: `${themeConstant.palette.secondary.dark} !important`
     },
     buttonsContainerClassName: {
         marginLeft: '9vw'

@@ -15,7 +15,7 @@ import lombok.ToString;
 public class Device {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     private String description;
     private String address;
     private Float hourlyEnergyConsumption;

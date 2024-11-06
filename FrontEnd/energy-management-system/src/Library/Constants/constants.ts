@@ -1,4 +1,6 @@
+//#region General
 export const EMPTY_STRING = "";
+//#endregion General
 
 // #region LogIn
 export const LOG_IN = "Log In";
@@ -87,12 +89,16 @@ export const UPDATE: string = "Update";
 export const ADD: string = "Add";
 
 export const LABEL_DESCRIPTION = "Description";
-export const LABEL_HOURLY_ENERGY_CONSUMPTION = "Description";
+export const LABEL_HOURLY_ENERGY_CONSUMPTION = "Hourlt energy consumption";
 //#endregion DevicePopUp
 
 //#region PairDevicePopUp
-export const DIALOG_TITLE: string = "You can see below the devices linked for the user selected.";
+export const DIALOG_TITLE: string = "You can see below the devices linked for the user selected. Please select one at the time (pair / unpair).";
 export const DIALOG_CONTENT_TEXT: string = "From the dropdown select the devices you want to link to the selected user."
+export const LABEL_ID: string = "demo-multiple-checkbox-label";
+export const ID_MULTIPLE_CHECKBOX: string = "demo-multiple-checkbox";
+export const LABEL_TAG : React.ReactNode = "Tag";
+export const COMMA_SEPARATOR: string = ", ";
 //#endregion PairDevicePopUp
 
 //#region AccessDeniedPage

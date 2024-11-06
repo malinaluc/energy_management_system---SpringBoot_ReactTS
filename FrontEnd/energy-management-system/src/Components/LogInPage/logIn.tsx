@@ -37,13 +37,18 @@ export const LogIn = (): JSX.Element => {
     setPassword(event.target.value);
   };
 
-  const checkEmailAndPassword = async (email: string, password: string): Promise<number> => {
+  const checkEmailAndPassword = async (email: string, password: string): Promise<{ userRole: number, userId: string, userUsername: string }> => {
     try {
       const response = await axios.get(`http://localhost:8080/api/users/${email}/${password}`);
-      return response.data;
+      console.log("RESPONSE IN CHECK EMAIL AND PASS IN LOGIN:" , response);
+      return {
+        userRole: response.data.role,
+        userId: response.data.id,
+        userUsername: response.data.username
+      };
     }
-    catch {
-      console.error('Error while logging in');
+    catch (error){
+      console.error('Error while logging in', error);
       throw Error;
     }
   };
@@ -51,15 +56,19 @@ export const LogIn = (): JSX.Element => {
   const handleLogin = async (event: any): Promise<void> => {
     console.log(email, password);
     try {
-      const check = await checkEmailAndPassword(email, password);
-      if (check == 0) {
+      const { userRole, userId, userUsername } = await checkEmailAndPassword(email, password);
+      if (userRole === 0) {
         sessionStorage.setItem("userRole", "admin");
+        sessionStorage.setItem("userId", userId);
+        sessionStorage.setItem("userUsername", userUsername);
         console.log("I SET USERROLE TO ADMIN - login");
         navigate(ADMIN_NAVIGATION_PATH);
         setLoginSuccess(true);
       }
-      else if (check == 1) {
+      else if (userRole === 1) {
         sessionStorage.setItem("userRole", "client");
+        sessionStorage.setItem("userId", userId);
+        sessionStorage.setItem("userUsername", userUsername);
         console.log("I SET USERROLE TO CLIENT - login");
         navigate(CLIENT_NAVIGATION_PATH);
         setLoginSuccess(true);

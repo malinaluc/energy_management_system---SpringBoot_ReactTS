@@ -1,0 +1,58 @@
+version: '3'
+
+services:
+  db:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'energy_system'
+      MYSQL_ROOT_PASSWORD: 'cutucutumiau'
+    ports:
+      - "3307:3306"
+    volumes:
+      - my-db:/var/lib/mysql
+    networks:
+      demo_net:
+  users-microservice:
+    build:
+      context: ./emsuser
+      dockerfile: ./Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_IP=db
+      - DB_PORT=3306
+      - DB_DBNAME=energy_system
+      - DB_USER=root
+      - DB_PASSWORD=cutucutumiau
+    networks:
+      - demo_net
+  devices-microservice:
+    build:
+      context: ./semdevices
+      dockerfile: ./Dockerfile
+    ports:
+      - "8081:8081"
+    environment:
+      - DB_IP=db
+      - DB_PORT=3306
+      - DB_DBNAME=energy_system_device
+      - DB_USER=root
+      - DB_PASSWORD=cutucutumiau
+    networks:
+      - demo_net
+  frontend:
+    build:
+      context: ./FrontEnd/energy-management-system
+      dockerfile: ./Dockerfile
+    ports:
+      - 3000:3000
+    networks:
+      - demo_net
+
+volumes:
+  my-db:
+
+networks:
+  demo_net:
+    external: true

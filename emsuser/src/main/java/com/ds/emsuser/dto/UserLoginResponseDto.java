@@ -3,13 +3,12 @@ package com.ds.emsuser.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.With;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@With
-@Data
-public class LoginDto {
-    private String email;
-    private String password;
+public class UserLoginResponseDto {
+    private Long id;
+    private Integer role;
+    private String username;
 }

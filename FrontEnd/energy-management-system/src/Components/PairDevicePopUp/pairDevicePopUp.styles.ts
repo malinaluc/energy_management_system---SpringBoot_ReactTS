@@ -3,11 +3,17 @@ import { themeConstant } from "../../Library/Constants/themeConstants";
 
 export const useStyles = makeStyles({
     root: {
-        overflow: 'hidden !important'
+        width: '50vw'
     },
-    textFieldsClassName: {
-        margin: '2vh 8vw',
-        width: '50%'
+    tableClassName: {
+        width: '25vw',
+    },
+    selectClassName: {
+        maxWidth: '20vw !important',
+        width: '20vw',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap'
     },
     buttonSaveClassName: {
         marginLeft: '11w !important',
@@ -16,8 +22,5 @@ export const useStyles = makeStyles({
     buttonCloseClassName: {
         marginLeft: '2vw !important',
         color: `${themeConstant.palette.secondary.dark} !important`
-    },
-    buttonsContainerClassName: {
-        marginLeft: '9vw'
     }
 });
