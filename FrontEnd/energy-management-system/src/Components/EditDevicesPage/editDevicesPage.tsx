@@ -6,10 +6,9 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Fragment } from "react/jsx-runtime";
 import { ALIGN_CENTER, DATA_GRID_ADDRESS_COLUMN, DATA_GRID_ID_COLUMN, ICON_BUTTON_DELETE_ARIA_LABEL, ICON_BUTTON_UPDATE_ARIA_LABEL, PAGE_SIZE_OPTIONS, SEE_DEVICES_BELOW, TYPOGRAPHY_VARIANT_H4 } from "../../Library/Constants/constants";
-import { ERROR_WHILE_LOADING_USERS } from '../../Library/Constants/errorsConstants';
+import { ERROR_WHILE_FETCHING_DEVICES } from '../../Library/Constants/errorsConstants';
 import { themeConstant } from "../../Library/Constants/themeConstants";
 import { IDevice } from '../../Library/Models/IDevice';
-import { IUser } from "../../Library/Models/IUser";
 import { DevicePopUp } from '../DevicePopUp/devicePopUp';
 import { useStyles } from "./editDevicesPage.styles";
 import { ITableData } from "./editDevicesPage.types";
@@ -17,9 +16,7 @@ import { ITableData } from "./editDevicesPage.types";
 export const EditDevicesPage = (): JSX.Element => {
     const styles = useStyles();
 
-    const [users, setUsers] = useState<IUser[]>([]);
     const [openDeviceDialog, setOpenDeviceDialog] = useState(false);
-    const [selectedUser, setSelectedUser] = useState<IUser | undefined>(undefined);
     const [devices, setDevices] = useState<IDevice[]>([]);
     const [selectedDevice, setSelectedDevice] = useState<IDevice | undefined>(undefined);
 
@@ -61,7 +58,7 @@ export const EditDevicesPage = (): JSX.Element => {
             setDevices(devicesResult.data);
         }
         catch {
-            console.error("Error while loading devices");
+            console.error(ERROR_WHILE_FETCHING_DEVICES);
         }
     };
 

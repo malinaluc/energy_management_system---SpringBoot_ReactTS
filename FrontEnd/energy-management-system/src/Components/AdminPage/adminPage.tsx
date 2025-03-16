@@ -8,7 +8,7 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import axios from "axios";
 import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ADD_USER, EDIT_DEVICES, EDIT_DEVICES_NAVIGATION_PATH, TYPOGRAPHY_TITLE_ADMIN, VARIANT_OUTLINED } from "../../Library/Constants/constants";
+import { ADD_USER, ALIGN_CENTER, ARIA_LABEL_DELETE, ARIA_LABEL_PAIR, ARIA_LABEL_UPDATE, DELETE_USER, EDIT_DEVICES, EDIT_DEVICES_NAVIGATION_PATH, EDIT_USER, PAIR_USER_DEVICE, TYPOGRAPHY_TITLE_ADMIN, TYPOGRAPHY_VARIANT_H4, VARIANT_OUTLINED } from "../../Library/Constants/constants";
 import { ERROR_DELETING_USER, ERROR_WHILE_LOADING_USERS } from "../../Library/Constants/errorsConstants";
 import { themeConstant } from "../../Library/Constants/themeConstants";
 import { IUser } from "../../Library/Models/IUser";
@@ -94,18 +94,18 @@ export const AdminPage = (): JSX.Element => {
             headerAlign: 'center',
             renderCell: (params) => (
                 <>
-                    <Tooltip title="Edit user">
-                        <IconButton aria-label="update" onClick={(event) => handleUpdate(params.row)}>
+                    <Tooltip title={EDIT_USER}>
+                        <IconButton aria-label={ARIA_LABEL_UPDATE} onClick={(event) => handleUpdate(params.row)}>
                             <EditIcon />
                         </IconButton>
                     </Tooltip>
-                    <Tooltip title="Delete user">
-                        <IconButton aria-label="delete" onClick={(event) => handleDelete(params.row.id)}>
+                    <Tooltip title={DELETE_USER}>
+                        <IconButton aria-label={ARIA_LABEL_DELETE} onClick={(event) => handleDelete(params.row.id)}>
                             <DeleteIcon />
                         </IconButton>
                     </Tooltip>
-                    <Tooltip title="Pair user with device">
-                        <IconButton aria-label="pair" onClick={(event) => handlePair(params.row)}>
+                    <Tooltip title={PAIR_USER_DEVICE}>
+                        <IconButton aria-label={ARIA_LABEL_PAIR} onClick={(event) => handlePair(params.row)}>
                             <CastIcon />
                         </IconButton>
                     </Tooltip>
@@ -127,7 +127,7 @@ export const AdminPage = (): JSX.Element => {
         <ThemeProvider theme={themeConstant}>
             <div className={styles.root}>
                 <Fragment>
-                    <Typography variant='h4' color={themeConstant.palette.primary.light} align="center">{TYPOGRAPHY_TITLE_ADMIN} </Typography>
+                    <Typography variant={TYPOGRAPHY_VARIANT_H4} color={themeConstant.palette.primary.light} align={ALIGN_CENTER}>{TYPOGRAPHY_TITLE_ADMIN} </Typography>
                 </Fragment>
                 <Button
                     className={styles.editUsersButtonClassName}

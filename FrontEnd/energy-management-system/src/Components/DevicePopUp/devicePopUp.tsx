@@ -1,12 +1,12 @@
+import { Button, Dialog, DialogContent, DialogContentText, DialogTitle, TextField, ThemeProvider } from "@mui/material";
+import axios from "axios";
 import { useState } from "react";
+import { ADD, ADD_DEVICE, EMPTY_STRING, LABEL_ADDRESS, LABEL_DESCRIPTION, LABEL_HOURLY_ENERGY_CONSUMPTION, ON_CLOSE_BUTTON, UPDATE, UPDATE_DEVICE, VARIANT_OUTLINED } from "../../Library/Constants/constants";
+import { ERROR_SAVING_DEVICE } from "../../Library/Constants/errorsConstants";
+import { themeConstant } from "../../Library/Constants/themeConstants";
 import { IDevice } from "../../Library/Models/IDevice";
 import { useStyles } from "./devicePopUp.styles";
 import { IDevicePopUpProps } from "./devicePopUp.types";
-import { ADD, ADD_DEVICE, EMPTY_STRING, LABEL_ADDRESS, LABEL_DESCRIPTION, LABEL_HOURLY_ENERGY_CONSUMPTION, ON_CLOSE_BUTTON, UPDATE, UPDATE_DEVICE, VARIANT_OUTLINED } from "../../Library/Constants/constants";
-import { Button, Dialog, DialogContent, DialogContentText, DialogTitle, TextField, ThemeProvider } from "@mui/material";
-import { themeConstant } from "../../Library/Constants/themeConstants";
-import axios from "axios";
-import { ERROR_SAVING_DEVICE } from "../../Library/Constants/errorsConstants";
 
 export const DevicePopUp = (props: IDevicePopUpProps): JSX.Element => {
     const styles = useStyles();

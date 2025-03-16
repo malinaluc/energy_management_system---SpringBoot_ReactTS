@@ -44,6 +44,12 @@ export const TYPOGRAPHY_TITLE_CLIENT: string = " Welcome back, client ! You can 
 //#region AdminPage
 export const TYPOGRAPHY_TITLE_ADMIN: string = " Welcome back, admin !"
 export const EDIT_DEVICES: string = "Edit Devices";
+export const PAIR_USER_DEVICE: string = "Pair user with device";
+export const DELETE_USER: string = "Delete user";
+export const EDIT_USER: string ="Edit user";
+export const ARIA_LABEL_UPDATE: string = "update";
+export const ARIA_LABEL_DELETE: string = "delete";
+export const ARIA_LABEL_PAIR: string = "pair";
 //#endregion AdminPage
 
 //#region RoutingPaths

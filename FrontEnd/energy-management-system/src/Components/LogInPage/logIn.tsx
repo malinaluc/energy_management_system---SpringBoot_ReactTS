@@ -6,6 +6,7 @@ import axios from "axios";
 import { Fragment, useState } from "react";
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { ADMIN_NAVIGATION_PATH, ALERT_TITLE_ERROR, ALIGN_CENTER, ANDORNMENT_EDGE_END, ANDORNMENT_POSITION_END, ARIA_LABEL_TOGGLE_PASS_VISIBILITY, AUTO_COMPLETE_CURRENT_PASSWORD, AUTOHIDE_DURATION, BUTTON_VARIANT_TEXT, CLIENT_NAVIGATION_PATH, DONT_HAVE_ACCOUNT, ID_PASSWORD_TEXTFIELD, ID_USERNAME_TEXTFIELD, LABEL_PASSWORD, LABEL_USERNAME, LOG_IN, MARGIN_NORMAL, MARGIN_TOP_1VH, MARGIN_TOP_4VH, SEVERITY_ERROR, SIGN_UP, SIZE_SMALL, TYPOGRAPHY_VARIANT_CAPTION, TYPOGRAPHY_VARIANT_H4, TYPOGRAPHY_VARIANT_H5, VARIANT_FILLED, VARIANT_OUTLINED, WRONG_USERNAME_OR_PASSWORD } from '../../Library/Constants/constants';
+import { ERROR_WHILE_LOGGING_IN } from '../../Library/Constants/errorsConstants';
 import { themeConstant } from '../../Library/Constants/themeConstants';
 import { useStyles } from "./login.styles";
 
@@ -40,15 +41,14 @@ export const LogIn = (): JSX.Element => {
   const checkEmailAndPassword = async (email: string, password: string): Promise<{ userRole: number, userId: string, userUsername: string }> => {
     try {
       const response = await axios.get(`http://localhost:8080/api/users/${email}/${password}`);
-      console.log("RESPONSE IN CHECK EMAIL AND PASS IN LOGIN:" , response);
       return {
         userRole: response.data.role,
         userId: response.data.id,
         userUsername: response.data.username
       };
     }
-    catch (error){
-      console.error('Error while logging in', error);
+    catch (error) {
+      console.error(ERROR_WHILE_LOGGING_IN, error);
       throw Error;
     }
   };
@@ -61,7 +61,6 @@ export const LogIn = (): JSX.Element => {
         sessionStorage.setItem("userRole", "admin");
         sessionStorage.setItem("userId", userId);
         sessionStorage.setItem("userUsername", userUsername);
-        console.log("I SET USERROLE TO ADMIN - login");
         navigate(ADMIN_NAVIGATION_PATH);
         setLoginSuccess(true);
       }
@@ -69,7 +68,6 @@ export const LogIn = (): JSX.Element => {
         sessionStorage.setItem("userRole", "client");
         sessionStorage.setItem("userId", userId);
         sessionStorage.setItem("userUsername", userUsername);
-        console.log("I SET USERROLE TO CLIENT - login");
         navigate(CLIENT_NAVIGATION_PATH);
         setLoginSuccess(true);
       }
@@ -79,7 +77,7 @@ export const LogIn = (): JSX.Element => {
       }
     }
     catch {
-      console.log("Error while logging in");
+      console.log(ERROR_WHILE_LOGGING_IN);
     }
   };
 

@@ -5,7 +5,7 @@ export const useUserRole = () => {
 
     useEffect(() => {
         const storedRole = sessionStorage.getItem("userRole");
-        
+
         setRole(storedRole);
     }, []);
 

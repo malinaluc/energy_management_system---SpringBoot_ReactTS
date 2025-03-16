@@ -24,14 +24,6 @@ export function Row(props: { row: IUserExpandTableData }) {
         loadDevices();
     },[]);
 
-    const handleUpdate = () => {
-
-    };
-
-    const handleDelete = () => {
-
-    };
-
     const loadDevices = async () => {
         try {
             const devicesResult = await axios.get('http://localhost:8081/api/devices');

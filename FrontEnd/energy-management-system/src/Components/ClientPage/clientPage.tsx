@@ -7,6 +7,8 @@ import Paper from '@mui/material/Paper';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import axios from "axios";
 import React, { Fragment, useEffect, useState } from "react";
+import { ALIGN_CENTER, ARIA_LABEL_DELETE, ARIA_LABEL_PAIR, ARIA_LABEL_UPDATE, TYPOGRAPHY_TITLE_CLIENT, TYPOGRAPHY_VARIANT_H4 } from "../../Library/Constants/constants";
+import { ERROR_LOADING_DEVICES, ERROR_USERNAME_NOT_FOUND } from "../../Library/Constants/errorsConstants";
 import { themeConstant } from "../../Library/Constants/themeConstants";
 import { IDevice } from "../../Library/Models/IDevice";
 import { useStyles } from "../ClientPage/clientPage.styles";
@@ -14,7 +16,6 @@ import { ITableData } from "./clientPage.types";
 
 export const ClientPage = (): JSX.Element => {
     const styles = useStyles();
-    const [dialogOpen, setDialogOpen] = useState(false);
     const [devices, setDevices] = useState<IDevice[]>([]);
 
     useEffect(() => {
@@ -36,7 +37,7 @@ export const ClientPage = (): JSX.Element => {
     const loadDevicesOfClient = async () => {
         const username = sessionStorage.getItem("userUsername");
         if (!username) {
-            console.error("User username not found in session storage");
+            console.error(ERROR_USERNAME_NOT_FOUND);
             return;
         }
 
@@ -44,7 +45,7 @@ export const ClientPage = (): JSX.Element => {
             const devicesResult = await axios.get(`http://localhost/api/devices/forUserEmail/${username}`);
             setDevices(devicesResult.data);
         } catch {
-            console.error("Error while loading devices based on user id");
+            console.error(ERROR_LOADING_DEVICES);
         }
     };
 
@@ -62,13 +63,13 @@ export const ClientPage = (): JSX.Element => {
             headerAlign: 'center',
             renderCell: () => (
                 <>
-                    <IconButton aria-label="update" onClick={(event) => handleUpdate(event)} disabled={true}>
+                    <IconButton aria-label={ARIA_LABEL_UPDATE} onClick={(event) => handleUpdate(event)} disabled={true}>
                         <EditIcon />
                     </IconButton>
-                    <IconButton aria-label="delete" onClick={(event) => handleDelete(event)} disabled={true}>
+                    <IconButton aria-label={ARIA_LABEL_DELETE} onClick={(event) => handleDelete(event)} disabled={true}>
                         <DeleteIcon />
                     </IconButton>
-                    <IconButton aria-label="pair" onClick={(event) => handlePair(event)} disabled={true}>
+                    <IconButton aria-label={ARIA_LABEL_PAIR} onClick={(event) => handlePair(event)} disabled={true}>
                         <CastIcon />
                     </IconButton>
                 </>
@@ -89,10 +90,10 @@ export const ClientPage = (): JSX.Element => {
         <ThemeProvider theme={themeConstant}>
             <div className={styles.root}>
                 <Fragment>
-                    <Typography variant='h4' color={themeConstant.palette.primary.light} align="center"> Welcome back ! You can see your devices below. </Typography>
+                    <Typography variant={TYPOGRAPHY_VARIANT_H4} color={themeConstant.palette.primary.light} align={ALIGN_CENTER}>{TYPOGRAPHY_TITLE_CLIENT}</Typography>
                 </Fragment>
 
-                <Paper className ={styles.paperOfDataGridClassName}>
+                <Paper className={styles.paperOfDataGridClassName}>
                     <DataGrid
                         className={styles.dataGridClassName}
                         rows={rows}

@@ -1,6 +1,5 @@
 import { IUser } from "../../Library/Models/IUser"
 import { IUserDevice } from "../../Library/Models/IUserDevice"
-import { IUserPopUpProps } from "../UserPopUp/userPopUp.types"
 
 export interface IUserTableData {
     id: number,

@@ -7,7 +7,6 @@ export const useStyles = makeStyles({
         minHeight: '100vh',
         minWidth: '100vw',
         display: 'grid',
-        ///justifyContent: 'center',
         alignItems: 'center',
         height: '100vh',
         overflow: 'hidden'

@@ -7,6 +7,7 @@ import { Role } from "../../Library/Enums/Role";
 import { IUser } from "../../Library/Models/IUser";
 import { useStyles } from "./userPopUp.styles";
 import { IUserPopUpProps } from "./userPopUp.types";
+import { ERROR_SAVING_USER } from "../../Library/Constants/errorsConstants";
 
 export const UserPopUp = (props: IUserPopUpProps): JSX.Element => {
     const styles = useStyles();
@@ -35,17 +36,15 @@ export const UserPopUp = (props: IUserPopUpProps): JSX.Element => {
     const handleSaveUser = async (): Promise<void> => {
         try {
             if (props.currentUser) {
-                console.log("Im in handleSaveUser function on update and the  user is  " , user);
                 const response = await axios.put(`http://localhost:8080/api/users/${user.id}`, user);
                 props.loadUsers();
             }
             else {
-                console.log("Im in handleSaveUser function on save and the  user is  " , user);
                 const response = await axios.post("http://localhost:8080/api/users", user);
                 props.loadUsers();
             }
         } catch (error) {
-            console.error("Error saving user:", error);
+            console.error(ERROR_SAVING_USER, error);
         }
         props.onClose();
     };
